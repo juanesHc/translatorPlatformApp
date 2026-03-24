@@ -1,32 +1,31 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { DocumentSummary } from '../../model/Document';
+import { DocumentFilters, LoadDocumentResponse, PaginatedDocumentResponse } from '../../model/Document';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DocumentService {
 
-  constructor() { }
-
   private http = inject(HttpClient);
   private baseUrl = 'http://localhost:8080/api/document';
 
-  getDocumentsByPerson(personId: string): Observable<DocumentSummary[]> {
-    return this.http.get<DocumentSummary[]>(`${this.baseUrl}/person/${personId}/summary`);
+  getDocuments(personId: string, filters: DocumentFilters): Observable<PaginatedDocumentResponse> {
+    let params = new HttpParams();
+    
+    if (filters.fileName) params = params.set('fileName', filters.fileName);
+    if (filters.createdAt) params = params.set('createdAt', filters.createdAt);
+    if (filters.targetDate) params = params.set('targetDate', filters.targetDate);
+    
+    params = params.set('page', filters.page.toString());
+    params = params.set('size', filters.size.toString());
+
+    return this.http.get<PaginatedDocumentResponse>(`${this.baseUrl}/retrieve/${personId}`, { params });
   }
 
   downloadDocument(documentId: string): Observable<Blob> {
     return this.http.get(`${this.baseUrl}/${documentId}/download`, { responseType: 'blob' });
   }
-
-searchDocuments(personId: string, query: string): Observable<DocumentSummary[]> {
-  return this.http.get<any>(
-    `${this.baseUrl}/retrieve/${personId}?fileName=${query}&page=0&size=10`
-  ).pipe(
-    map((response: any) => response.documents)
-  );
-}
 
 }

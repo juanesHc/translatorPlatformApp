@@ -191,3 +191,130 @@
 .search-wrapper input::placeholder {
   color: #9ca3af;
 }
+.actions-row {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.filters-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap; /* Para que en móviles se vea bien */
+}
+
+/* Ajuste al buscador para que conviva con las fechas */
+.search-wrapper {
+  flex: 1; /* El buscador toma el espacio sobrante */
+  min-width: 200px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border-radius: 8px;
+  border: 0.5px solid rgba(26, 39, 68, 0.15);
+  padding: 10px 14px;
+  margin-bottom: 0; /* Quitamos el margin inferior previo */
+  transition: border-color 0.2s;
+}
+
+.search-wrapper:focus-within {
+  border-color: #f5c542;
+}
+
+/* Contenedor de fechas */
+.date-filters {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #fff;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 0.5px solid rgba(26, 39, 68, 0.15);
+}
+
+.date-filters input[type="date"] {
+  border: none;
+  outline: none;
+  font-size: 12px;
+  color: #1a2744;
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.date-sep {
+  font-size: 11px;
+  color: #9ca3af;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* --- ESTILOS DE PAGINACIÓN --- */
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 30px;
+  padding-bottom: 40px;
+}
+
+.pagination-controls button {
+  background: #fff;
+  border: 0.5px solid rgba(26, 39, 68, 0.15);
+  color: #1a2744;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pagination-controls button:hover:not(:disabled) {
+  background: #f5c542;
+  border-color: #f5c542;
+}
+
+.pagination-controls button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.page-info {
+  font-size: 12px;
+  color: #6b7280;
+  font-weight: 500;
+}
+
+/* --- ESTADOS Y OTROS --- */
+
+.state-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+/* Ajuste al botón upload para que no rompa el flujo */
+.btn-upload {
+  align-self: flex-start;
+  background: #f5c542;
+  color: #1a2744;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 0; /* Controlado por el gap de actions-row */
+  box-shadow: 0 4px 12px rgba(245, 197, 66, 0.2);
+}
+
+.btn-upload:hover {
+  filter: brightness(1.05);
+}
