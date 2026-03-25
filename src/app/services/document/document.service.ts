@@ -28,4 +28,27 @@ export class DocumentService {
     return this.http.get(`${this.baseUrl}/${documentId}/download`, { responseType: 'blob' });
   }
 
+  updateName(documentId: string, newName: string): Observable<LoadDocumentResponse> {
+    const params = new HttpParams().set('newName', newName);
+    return this.http.patch<LoadDocumentResponse>(`${this.baseUrl}/update-name/${documentId}`, null, { params });
+  }
+
+  deleteDocument(documentId: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/delete/${documentId}`);
+  }
+  
+uploadDocument(personId: string, file: File, targetLanguage: string): Observable<LoadDocumentResponse> {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('targetLanguage', targetLanguage); 
+  
+  return this.http.post<LoadDocumentResponse>(`${this.baseUrl}/load/${personId}`, formData);
+}
+
+
+getAvailableLanguages(): Observable<string[]> {
+  return this.http.get<string[]>(`${this.baseUrl}/languages`);
+}
+
+
 }

@@ -17,19 +17,21 @@
       </p>
 
       <div class="actions-row">
-        <button class="btn-upload">+ Nueva traducción</button>
-        
+        <button class="btn-upload" (click)="openUpload()">
+          + Nueva traducción
+        </button>
+
         <div class="filters-bar">
           <div class="search-wrapper">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <circle cx="6.5" cy="6.5" r="4" stroke="#9ca3af" stroke-width="1.5"/>
-              <path d="M11 11l3 3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="6.5" cy="6.5" r="4" stroke="#9ca3af" stroke-width="1.5" />
+              <path d="M11 11l3 3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round" />
             </svg>
-            <input
-              type="text"
-              placeholder="Buscar por nombre..."
+            <input 
+              type="text" 
+              placeholder="Buscar por nombre..." 
               #searchInput
-              (input)="onSearch(searchInput.value)"
+              (input)="onSearch(searchInput.value)" 
             />
           </div>
 
@@ -59,21 +61,34 @@
         } @else {
           <div class="doc-list">
             @for (doc of documents; track doc.documentId) {
-              <div class="doc-item" (click)="goToDocument(doc.documentId)">
-                <div class="doc-left">
+              <div class="doc-item">
+                <div class="doc-left" (click)="goToDocument(doc.documentId)">
                   <div class="doc-icon">
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                      <rect x="3" y="1" width="10" height="14" rx="1.5" fill="#1a2744" opacity="0.15"/>
-                      <path d="M10 1v4h4" stroke="#1a2744" stroke-width="1.2" opacity="0.4"/>
-                      <path d="M6 8h6M6 11h4" stroke="#1a2744" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+                      <rect x="3" y="1" width="10" height="14" rx="1.5" fill="#1a2744" opacity="0.15" />
+                      <path d="M10 1v4h4" stroke="#1a2744" stroke-width="1.2" opacity="0.4" />
+                      <path d="M6 8h6M6 11h4" stroke="#1a2744" stroke-width="1.2" stroke-linecap="round" opacity="0.5" />
                     </svg>
                   </div>
-                  <div>
-                    <div class="doc-name">{{ doc.documentName }}</div>
-                  </div>
+                  <div class="doc-name">{{ doc.documentName }}</div>
                 </div>
-                <div class="doc-right">
-                  <span class="arrow">›</span>
+
+                <div class="doc-actions">
+                  <button class="action-btn edit" (click)="openEditModal(doc)" title="Editar nombre">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                  </button>
+
+                  <button class="action-btn delete" (click)="confirmDelete(doc)" title="Eliminar documento">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <polyline points="3 6 5 6 21 6"></polyline>
+                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                    </svg>
+                  </button>
+
+                  <span class="arrow" (click)="goToDocument(doc.documentId)">›</span>
                 </div>
               </div>
             }
@@ -89,10 +104,110 @@
 
       <div class="plane-fab">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-          <path d="M22 2L11 13" stroke="#f5c542" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="#f5c542" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M22 2L11 13" stroke="#f5c542" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="#f5c542" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showUploadModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>Subir nuevo documento</h3>
+      <button class="close-x" (click)="closeUpload()">×</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="dropzone" 
+           (dragover)="$event.preventDefault()" 
+           (drop)="onFileDropped($event)">
+        
+        <div class="dropzone-content" *ngIf="!selectedFile">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+          </svg>
+          <p>Arrastra tu archivo aquí</p>
+          <span class="or-divider">o</span>
+          <button class="btn-browse" (click)="fileInput.click()">
+            Buscar en el dispositivo
+          </button>
+        </div>
+
+        <div class="file-selected" *ngIf="selectedFile">
+          <div class="file-info-box">
+            <span class="file-name">{{ selectedFile.name }}</span>
+            <button class="remove-file" (click)="selectedFile = null">Cambiar archivo</button>
+          </div>
+        </div>
+
+        <input #fileInput type="file" (change)="onFileSelected($event)" hidden accept=".pdf,.docx,.txt">
+        <div class="translation-settings" *ngIf="selectedFile && !uploading">
+  <label class="section-title" style="margin-bottom: 8px; display: block;">
+    Traducir a:
+  </label>
+  <div class="lang-grid">
+    @for (lang of availableLanguages; track lang) {
+      <div class="lang-option" 
+           [class.active]="targetLanguage === lang"
+           (click)="targetLanguage = lang">
+        {{ lang | titlecase }}
+      </div>
+    }
+  </div>
+</div>
+      </div>
+      <p class="error-text" *ngIf="uploadError">{{ uploadError }}</p>
+    </div>
+
+<div class="modal-footer">
+  <button class="btn-secondary" (click)="closeUpload()">Cancelar</button>
+  
+  <button class="btn-primary" 
+          [disabled]="!selectedFile || !targetLanguage || uploading" 
+          (click)="confirmUpload()">
+    {{ uploading ? 'Procesando...' : 'Comenzar traducción' }}
+  </button>
+</div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showDeleteModal">
+  <div class="modal-card confirm-card">
+    <div class="modal-header">
+      <h3 class="delete-title">¿Eliminar documento?</h3>
+    </div>
+    <div class="modal-body">
+      <p>Estás a punto de borrar <strong>{{ selectedDoc?.documentName }}</strong>.</p>
+      <p class="warning-text">Esta acción eliminará también todas las traducciones asociadas y no se puede deshacer.</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="showDeleteModal = false">Cancelar</button>
+      <button class="btn-danger" (click)="deleteSelectedDoc()">Eliminar ahora</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" *ngIf="showEditModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <h3>Editar nombre del archivo</h3>
+    </div>
+    <div class="modal-body">
+      <div class="search-wrapper" style="margin-bottom: 0;">
+        <input 
+          type="text" 
+          [value]="newName" 
+          (input)="newName = $any($event.target).value"
+          placeholder="Nuevo nombre..."
+          style="width: 100%;"
+        >
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="showEditModal = false">Cancelar</button>
+      <button class="btn-primary" (click)="updateName()">Guardar cambios</button>
     </div>
   </div>
 </div>
