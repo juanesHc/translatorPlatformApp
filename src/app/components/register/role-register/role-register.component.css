@@ -1,0 +1,26 @@
+.shell { display: flex; flex-direction: column; height: 100vh; background: #1a2744; }
+.topbar { background: #1a2744; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 0.5px solid rgba(255,255,255,0.1); }
+.topbar-logo { color: #f5c542; font-size: 15px; font-weight: 500; }
+.topbar-user { display: flex; align-items: center; gap: 10px; }
+.avatar { width: 34px; height: 34px; border-radius: 50%; background: #f5c542; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; color: #1a2744; }
+.username { color: rgba(255,255,255,0.75); font-size: 13px; }
+.main { display: flex; flex: 1; overflow: hidden; }
+.content { flex: 1; background: #e8eaf0; padding: 28px; overflow-y: auto; }
+.back-btn { display: flex; align-items: center; gap: 6px; font-size: 13px; color: #6b7280; background: none; border: none; cursor: pointer; margin-bottom: 20px; padding: 0; }
+.back-btn:hover { color: #1a2744; }
+.page-title { font-size: 18px; font-weight: 500; color: #1a2744; margin-bottom: 4px; }
+.page-sub { font-size: 13px; color: #6b7280; margin-bottom: 24px; }
+.card { background: #fff; border-radius: 12px; border: 0.5px solid rgba(26,39,68,0.12); padding: 24px; max-width: 560px; }
+.error-banner { background: rgba(220,38,38,0.1); color: #dc2626; border-radius: 8px; padding: 10px 14px; font-size: 12px; margin-bottom: 16px; }
+.success-banner { background: rgba(16,185,129,0.1); color: #059669; border-radius: 8px; padding: 10px 14px; font-size: 12px; margin-bottom: 16px; }
+.form-fields { display: flex; flex-direction: column; gap: 16px; }
+.field-row { display: flex; gap: 12px; }
+.field { display: flex; flex-direction: column; gap: 6px; flex: 1; }
+.field label { font-size: 12px; color: #6b7280; }
+.field input, .field select { background: #f3f4f6; border: 0.5px solid rgba(26,39,68,0.1); border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #1a2744; outline: none; width: 100%; box-sizing: border-box; }
+.field input:focus, .field select:focus { border-color: rgba(245,197,66,0.5); }
+.input-wrapper { position: relative; display: flex; align-items: center; }
+.input-wrapper input { padding-right: 36px; }
+.eye-btn { position: absolute; right: 10px; background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center; }
+.form-action { display: flex; justify-content: flex-end; margin-top: 20px; }
+.btn-primary { background: #f5c542; color: #1a2744; border: none; border-radius: 8px; padding: 10px 24px; font-size: 13px; font-weight: 500; cursor: pointer; }

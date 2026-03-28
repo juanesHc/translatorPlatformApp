@@ -21,19 +21,20 @@ export const routes: Routes = [
     loadComponent: () => import('./components/about/about.component')
       .then(m => m.AboutComponent)
   },
-  {
-  path: 'about',
-  loadComponent: () => import('./components/about/about.component')
-    .then(m => m.AboutComponent)
-},
   
 { path: 'login', loadComponent: () => import('./components/login/login.component').then(m => m.LoginComponent) },
 { path: 'register', loadComponent: () => import('./components/register/public-register/public-register.component').then(m => m.PublicRegisterComponent) },
+{ path: 'role-register', loadComponent: () => import('./components/register/role-register/role-register.component').then(m => m.RoleRegisterComponent) },
 { path: '', redirectTo: 'login', pathMatch: 'full' },
 {
   path: 'not-found',
   loadComponent: () => import('./components/not-found/not-found.component')
     .then(m => m.NotFoundComponent)
+},
+{
+  path: 'admin/users',
+  loadComponent: () => import('./components/admin-users/admin-users.component')
+    .then(m => m.AdminUsersComponent)
 },
 {
   path: '**',

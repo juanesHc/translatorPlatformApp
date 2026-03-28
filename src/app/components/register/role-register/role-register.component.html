@@ -1,1 +1,93 @@
-<p>role-register works!</p>
+<div class="shell">
+  <div class="topbar">
+    <span class="topbar-logo">TranslatorPlatform</span>
+    <div class="topbar-user">
+      <span class="username">Admin</span>
+      <div class="avatar">AD</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <app-sidebar role="ADMIN" />
+
+    <div class="content">
+      <button class="back-btn" (click)="goBack()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M10 12L6 8l4-4" stroke="#6b7280" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Volver a usuarios
+      </button>
+
+      <p class="page-title">Registrar usuario</p>
+      <p class="page-sub">Crea una nueva cuenta con rol asignado</p>
+
+      <div class="card">
+        @if (errorMessage) {
+          <div class="error-banner">{{ errorMessage }}</div>
+        }
+        @if (successMessage) {
+          <div class="success-banner">{{ successMessage }}</div>
+        }
+
+        <div class="form-fields">
+          <div class="field-row">
+            <div class="field">
+              <label>Nombre</label>
+              <input type="text" placeholder="Juan" [(ngModel)]="givenName" />
+            </div>
+            <div class="field">
+              <label>Apellido</label>
+              <input type="text" placeholder="Herrera" [(ngModel)]="familyName" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label>Correo electrónico</label>
+            <input type="email" placeholder="tu@correo.com" [(ngModel)]="email" />
+          </div>
+
+          <div class="field">
+            <label>Rol</label>
+                <select [(ngModel)]="role">
+                <option value="" disabled>Selecciona un rol</option>
+                @for (r of roles; track r.id) {
+                    <option [value]="r.type">{{ r.type }}</option>
+                }
+                </select>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label>Contraseña</label>
+              <div class="input-wrapper">
+                <input [type]="showPassword ? 'text' : 'password'" placeholder="••••••••" [(ngModel)]="password" />
+                <button class="eye-btn" (click)="showPassword = !showPassword" type="button">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="#6b7280" stroke-width="1.5"/>
+                    <circle cx="12" cy="12" r="3" stroke="#6b7280" stroke-width="1.5"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="field">
+              <label>Confirmar contraseña</label>
+              <div class="input-wrapper">
+                <input [type]="showConfirmPassword ? 'text' : 'password'" placeholder="••••••••" [(ngModel)]="confirmPassword" />
+                <button class="eye-btn" (click)="showConfirmPassword = !showConfirmPassword" type="button">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" stroke="#6b7280" stroke-width="1.5"/>
+                    <circle cx="12" cy="12" r="3" stroke="#6b7280" stroke-width="1.5"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-action">
+          <button class="btn-primary" (click)="register()">Registrar usuario</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

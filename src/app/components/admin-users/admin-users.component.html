@@ -1,0 +1,92 @@
+<div class="shell">
+  <div class="topbar">
+    <span class="topbar-logo">TranslatorPlatform</span>
+    <div class="topbar-user">
+      <span class="username">Admin</span>
+      <div class="avatar">AD</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <app-sidebar role="ADMIN" />
+
+    <div class="content">
+      <div class="page-header">
+        <div>
+          <p class="page-title">Usuarios</p>
+          <p class="page-sub">Gestiona los usuarios de la plataforma</p>
+        </div>
+        <button class="btn-add" (click)="goToRegister()">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path d="M9 4v10M4 9h10" stroke="#1a2744" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="filters-card">
+        <div class="filters-row">
+          <input placeholder="Nombre" [(ngModel)]="filters.givenName" />
+          <input placeholder="Apellido" [(ngModel)]="filters.familyName" />
+          <input placeholder="Correo" [(ngModel)]="filters.email" />
+          <select [(ngModel)]="filters.authEnum">
+            <option value="">Registro</option>
+            <option value="CLASSIC">Clásico</option>
+            <option value="GOOGLE">Google</option>
+          </select>
+          <select [(ngModel)]="filters.activate">
+            <option [ngValue]="null">Estado</option>
+            <option [ngValue]="true">Activo</option>
+            <option [ngValue]="false">Inactivo</option>
+          </select>
+        </div>
+        <div class="filters-row-dates">
+          <div class="date-field">
+            <span class="date-label">Desde</span>
+            <input type="date" [(ngModel)]="filters.startDate" />
+          </div>
+          <div class="date-field">
+            <span class="date-label">Hasta</span>
+            <input type="date" [(ngModel)]="filters.endDate" />
+          </div>
+          <button class="btn-search" (click)="search()">Buscar</button>
+          <button class="btn-clear" (click)="clearFilters()">Limpiar</button>
+        </div>
+      </div>
+
+      @if (loading) {
+        <p class="empty">Cargando usuarios...</p>
+      } @else if (persons.length === 0) {
+        <p class="empty">No hay usuarios que coincidan con los filtros.</p>
+      } @else {
+        <div class="table-card">
+          <div class="table-header">
+            <span>Nombre</span>
+            <span>Apellido</span>
+            <span>Correo</span>
+            <span>Estado</span>
+            <span>Registro</span>
+          </div>
+          @for (person of persons; track person.personId) {
+            <div class="table-row">
+              <span>{{ person.givenName }}</span>
+              <span>{{ person.familyName }}</span>
+              <span class="muted">{{ person.email }}</span>
+              <span class="badge" [class.active]="person.activate" [class.inactive]="!person.activate">
+                {{ person.activate ? 'Activo' : 'Inactivo' }}
+              </span>
+              <span class="badge" [class.google]="person.authEnum === 'GOOGLE'" [class.classic]="person.authEnum === 'CLASSIC'">
+                {{ person.authEnum === 'GOOGLE' ? 'Google' : 'Clásico' }}
+              </span>
+            </div>
+          }
+        </div>
+
+        <div class="pagination">
+          <button class="btn-page" (click)="prevPage()" [disabled]="currentPage === 0">‹</button>
+          <span class="page-info">Página {{ currentPage + 1 }} de {{ totalPages }}</span>
+          <button class="btn-page" (click)="nextPage()" [disabled]="currentPage === totalPages - 1">›</button>
+        </div>
+      }
+    </div>
+  </div>
+</div>

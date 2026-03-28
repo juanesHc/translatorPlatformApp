@@ -10,7 +10,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
   styleUrl: './sidebar.component.css'
 })
 export class SidebarComponent {
-  @Input() role: string = 'COMMON';
+  @Input() role: string = 'ADMIN';
     private router = inject(Router);
 
     logout(): void {

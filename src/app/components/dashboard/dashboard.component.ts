@@ -18,18 +18,15 @@ export class DashboardComponent implements OnInit {
   private documentService = inject(DocumentService);
   private router = inject(Router);
 
-  // --- Datos de la lista ---
   documents: LoadDocumentResponse[] = [];
   loading = false;
   totalElements = 0;
   totalPages = 0;
 
-  // --- Estados de Modales ---
   showUploadModal = false;
   showDeleteModal = false;
   showEditModal = false;
 
-  // --- Variables auxiliares ---
   selectedFile: File | null = null;
   selectedDoc: LoadDocumentResponse | null = null;
   newName = '';
@@ -37,10 +34,9 @@ export class DashboardComponent implements OnInit {
   uploadError = '';
 
   availableLanguages: string[] = [];
-targetLanguage = ''
+  targetLanguage = ''
 
-  // --- Configuración de búsqueda ---
-  private personId = '7de063b8-8e64-4312-afde-1615bddf0d76';
+  private personId = '18850e53-7a98-46b2-831a-19758501d3a3';
   
   filters: DocumentFilters = {
     fileName: '',
@@ -58,7 +54,6 @@ targetLanguage = ''
     this.loadLanguages();
   }
 
-  // --- Pipeline de Búsqueda RxJS ---
   private initSearchPipeline(): void {
     this.filterSubject.pipe(
       debounceTime(400), 
@@ -88,7 +83,7 @@ loadLanguages() {
   });
 }
 
-  // --- Handlers de Filtros ---
+
   onSearch(query: string): void {
     this.filters.fileName = query;
     this.filters.page = 0; 
@@ -108,12 +103,10 @@ loadLanguages() {
     }
   }
 
-  // --- Navegación ---
   goToDocument(documentId: string): void {
     this.router.navigate(['/translation', documentId]);
   }
 
-  // --- Gestión de Subida (Upload) ---
   openUpload() { 
     this.showUploadModal = true; 
     this.uploadError = ''; 
