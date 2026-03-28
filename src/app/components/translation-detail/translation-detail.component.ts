@@ -5,12 +5,13 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 import { TranslationSummary } from '../../model/Translation';
 import { DocumentService } from '../../services/document/document.service';
 import { TranslationService } from '../../services/translation/translation.service';
+import { FormsModule } from '@angular/forms';
 
 
 @Component({
   selector: 'app-document-detail',
   standalone: true,
-  imports: [CommonModule, SidebarComponent],
+  imports: [CommonModule, SidebarComponent,FormsModule],
   templateUrl: './translation-detail.component.html',
   styleUrl: './translation-detail.component.css'
 })
@@ -23,6 +24,15 @@ export class TranslationDetailComponent implements OnInit {
   documentId: string = '';
   translations: TranslationSummary[] = [];
   loading = false;
+
+  showTranslationModal = false;
+  selectedLanguage = '';
+
+  showEmailModal = false;
+  selectedTranslationId = '';
+  emailTo = '';
+  emailSubject = '';
+  emailMessage = '';
 
   ngOnInit(): void {
     this.documentId = this.route.snapshot.paramMap.get('id') ?? '';
@@ -83,5 +93,45 @@ export class TranslationDetailComponent implements OnInit {
     },
     error: (err) => console.error(err)
   });
+}
+
+languages = this.documentService.getAvailableLanguages(); 
+openTranslationModal(): void {
+  this.showTranslationModal = true;
+}
+
+closeTranslationModal(): void {
+  this.showTranslationModal = false;
+  this.selectedLanguage = '';
+}
+
+requestTranslation(): void {
+  if (!this.selectedLanguage) return;
+  this.closeTranslationModal();
+  this.loadTranslations();
+}
+
+openEmailModal(translationId: string): void {
+  this.selectedTranslationId = translationId;
+  this.showEmailModal = true;
+}
+
+closeEmailModal(): void {
+  this.showEmailModal = false;
+  this.selectedTranslationId = '';
+  this.emailTo = '';
+  this.emailSubject = '';
+  this.emailMessage = '';
+}
+
+sendEmail(): void {
+  if (!this.emailTo) return;
+  // TODO: conectar al endpoint de envío de correo
+  console.log('Enviar a:', this.emailTo);
+  this.closeEmailModal();
+}
+
+sendTranslation(translationId: string): void {
+  this.openEmailModal(translationId);
 }
 }

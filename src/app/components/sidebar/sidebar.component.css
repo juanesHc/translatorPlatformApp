@@ -40,3 +40,18 @@
   height: 16px;
   flex-shrink: 0;
 }
+
+.sidebar-bottom {
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 0.5px solid rgba(255, 255, 255, 0.08);
+}
+
+.logout {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.logout:hover {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.08);
+}

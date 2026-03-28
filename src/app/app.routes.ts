@@ -11,14 +11,32 @@ export const routes: Routes = [
     loadComponent: () => import('./components/translation-detail/translation-detail.component')
       .then(m => m.TranslationDetailComponent)
   },
+  {
+    path: 'profile',
+    loadComponent: () => import('./components/profile/profile.component')
+      .then(m => m.ProfileComponent)
+  },
     {
-    path: 'document/:id',
-    loadComponent: () => import('./components/document-detail/document-detail.component')
-      .then(m => m.DocumentDetailComponent)
+    path: 'about',
+    loadComponent: () => import('./components/about/about.component')
+      .then(m => m.AboutComponent)
   },
   {
-    path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full'
-  }
+  path: 'about',
+  loadComponent: () => import('./components/about/about.component')
+    .then(m => m.AboutComponent)
+},
+  
+{ path: 'login', loadComponent: () => import('./components/login/login.component').then(m => m.LoginComponent) },
+{ path: 'register', loadComponent: () => import('./components/register/public-register/public-register.component').then(m => m.PublicRegisterComponent) },
+{ path: '', redirectTo: 'login', pathMatch: 'full' },
+{
+  path: 'not-found',
+  loadComponent: () => import('./components/not-found/not-found.component')
+    .then(m => m.NotFoundComponent)
+},
+{
+  path: '**',
+  redirectTo: 'not-found'
+}
 ];

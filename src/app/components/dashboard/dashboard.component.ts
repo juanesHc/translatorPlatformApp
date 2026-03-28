@@ -40,7 +40,7 @@ export class DashboardComponent implements OnInit {
 targetLanguage = ''
 
   // --- Configuración de búsqueda ---
-  private personId = '24999e2d-25d1-4f67-94a6-e0612d9e4276';
+  private personId = '7de063b8-8e64-4312-afde-1615bddf0d76';
   
   filters: DocumentFilters = {
     fileName: '',
@@ -158,7 +158,7 @@ confirmUpload() {
     next: (res) => {
       this.uploading = false;
       this.closeUpload();
-      this.router.navigate(['/document', res.documentId]);
+      this.router.navigate(['/dashboard', res.documentId]);
     },
     error: (err) => {
       this.uploading = false;

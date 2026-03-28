@@ -1,0 +1,88 @@
+<div class="shell">
+  <div class="topbar">
+    <span class="topbar-logo">TranslatorPlatform</span>
+    <div class="topbar-user">
+      <span class="username">{{ personData.firstName }}</span>
+      <div class="avatar">{{ getInitials() }}</div>
+    </div>
+  </div>
+
+  <div class="main">
+    <app-sidebar role="COMMON" />
+
+    <div class="content">
+      <p class="page-title">Mi cuenta</p>
+      <p class="page-sub">Administra tu información personal</p>
+
+      @if (successMessage) {
+        <div class="success-banner">{{ successMessage }}</div>
+      }
+
+      <div class="card">
+        <div class="card-profile-header">
+          <div class="avatar-lg">{{ getInitials() }}</div>
+          <div>
+            <p class="profile-name">{{ personData.firstName }} {{ personData.lastName }}</p>
+            <p class="profile-email">{{ personData.email }}</p>
+          </div>
+        </div>
+
+        <div class="form-fields">
+          <div class="field">
+            <label>Correo electrónico</label>
+            <div class="field-readonly">{{ personData.email }}</div>
+            <p class="field-hint">El correo no se puede editar</p>
+          </div>
+
+          <div class="field">
+            <label>Nombre</label>
+            <input type="text" [(ngModel)]="firstName" />
+          </div>
+
+          <div class="field">
+            <label>Apellido</label>
+            <input type="text" [(ngModel)]="lastName" />
+          </div>
+
+          <div class="field-action">
+            <button class="btn-primary" (click)="openEditModal()">Guardar cambios</button>
+          </div>
+        </div>
+
+        <div class="danger-zone">
+          <p class="danger-title">Zona de peligro</p>
+          <p class="danger-sub">Una vez desactives tu cuenta no podrás acceder a tus documentos.</p>
+          <button class="btn-danger" (click)="openDeactivateModal()">Desactivar cuenta</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+@if (showEditModal) {
+  <div class="modal-overlay">
+    <div class="modal">
+      <p class="modal-title">¿Guardar cambios?</p>
+      <p class="modal-sub">Se actualizará tu nombre y apellido en el sistema.</p>
+      <div class="modal-actions">
+        <button class="btn-secondary" (click)="closeEditModal()">Cancelar</button>
+        <button class="btn-primary" (click)="confirmEdit()" [disabled]="loading">
+          {{ loading ? 'Guardando...' : 'Confirmar' }}
+        </button>
+      </div>
+    </div>
+  </div>
+}
+
+@if (showDeactivateModal) {
+  <div class="modal-overlay">
+    <div class="modal modal-danger">
+      <p class="modal-title danger-text">¿Desactivar cuenta?</p>
+      <p class="modal-sub">Esta acción desactivará tu cuenta. No podrás acceder a tus documentos ni traducciones.</p>
+      <div class="modal-actions">
+        <button class="btn-secondary" (click)="closeDeactivateModal()">Cancelar</button>
+        <button class="btn-deactivate" (click)="confirmDeactivate()">Sí, desactivar</button>
+      </div>
+    </div>
+  </div>
+}
