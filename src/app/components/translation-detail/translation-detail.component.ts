@@ -107,8 +107,17 @@ closeTranslationModal(): void {
 
 requestTranslation(): void {
   if (!this.selectedLanguage) return;
-  this.closeTranslationModal();
-  this.loadTranslations();
+
+  this.translationService.translateDocument(this.documentId, this.selectedLanguage).subscribe({
+    next: () => {
+      this.closeTranslationModal();
+      this.loadTranslations();
+    },
+    error: (err) => {
+      console.error(err);
+      this.closeTranslationModal();
+    }
+  });
 }
 
 openEmailModal(translationId: string): void {

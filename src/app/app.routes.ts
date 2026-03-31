@@ -32,7 +32,7 @@ export const routes: Routes = [
     .then(m => m.NotFoundComponent)
 },
 {
-  path: 'admin/users',
+  path: 'filter-users',
   loadComponent: () => import('./components/admin-users/admin-users.component')
     .then(m => m.AdminUsersComponent)
 },

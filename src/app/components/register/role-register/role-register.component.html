@@ -48,14 +48,17 @@
 
           <div class="field">
             <label>Rol</label>
-                <select [(ngModel)]="role">
-                <option value="" disabled>Selecciona un rol</option>
-                @for (r of roles; track r.id) {
-                    <option [value]="r.type">{{ r.type }}</option>
-                }
-                </select>
+<select [(ngModel)]="role">
+  <option value="" disabled>Selecciona un rol</option>
+  @for (r of roles; track r.roleType) {
+    <option [value]="r.roleType">{{ r.roleType }}</option>
+  }
+</select>
           </div>
 
+
+
+          
           <div class="field-row">
             <div class="field">
               <label>Contraseña</label>

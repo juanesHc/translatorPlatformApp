@@ -48,10 +48,32 @@ export interface RetrievePersonPageResponse {
   message: string;
 }
 
-export interface AdminRegisterRequest {
+export interface RegisterPersonWithRoleRequestDto {
   givenName: string;
   familyName: string;
   email: string;
   password: string;
   role: string;
+  confirmPassword: string;
+}
+
+export interface RegisterPersonWithRoleResponseDto {
+  successfulMessage: string;
+}
+
+export interface RetrievePersonResponse {
+  personId: string;
+  givenName: string;
+  familyName: string;
+  email: string;
+  role: string;
+  authEnum: string;
+  activate: boolean;
+  block: boolean;
+  createdAt: string;
+}
+
+export interface RetrieveStatusAccountResponse {
+  status: boolean;
+  message: string;
 }

@@ -85,7 +85,7 @@ export class AdminUsersComponent implements OnInit {
   }
 
   goToRegister(): void {
-    this.router.navigate(['/admin/register']);
+    this.router.navigate(['/role-register']);
   }
 
   prevPage(): void {
@@ -101,4 +101,14 @@ export class AdminUsersComponent implements OnInit {
       this.search();
     }
   }
+
+toggleBlock(person: RetrievePersonResponse): void {
+  this.adminService.blockPerson(person.personId).subscribe({
+    next: (data) => {
+      person.block = data.status;
+    },
+    error: (err) => console.error(err)
+  });
+}
+
 }

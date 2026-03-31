@@ -21,8 +21,12 @@ export class TranslationService {
     return this.http.get(`${this.baseUrl}/${translationId}/pdf`, { responseType: 'blob' });
   }
 
-    downloadTranslatedPdf(translationId: string): Observable<Blob> {
+  downloadTranslatedPdf(translationId: string): Observable<Blob> {
     return this.http.get(`${this.baseUrl}/${translationId}/pdf`, { responseType: 'blob' });
   }
+
+  translateDocument(documentId: string, targetLanguage: string): Observable<any> {
+  return this.http.post(`${this.baseUrl}/${documentId}`, { targetLanguage });
+}
 
 }
