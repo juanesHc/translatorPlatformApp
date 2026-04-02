@@ -121,9 +121,9 @@ loadLanguages() {
     }
   }
 
-  goToDocument(documentId: string): void {
-    this.router.navigate(['/translation', documentId]);
-  }
+goToDocument(documentId: string): void {
+  this.router.navigate(['/translation', documentId]);
+}
 
   openUpload() { 
     this.showUploadModal = true; 
@@ -169,7 +169,7 @@ confirmUpload() {
     next: (res) => {
       this.uploading = false;
       this.closeUpload();
-      this.router.navigate(['/dashboard', res.documentId]);
+      this.router.navigate(['/translation', res.documentId]);
     },
     error: (err) => {
       this.uploading = false;

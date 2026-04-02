@@ -29,7 +29,7 @@ private readonly TOKEN_KEY = 'jwt_token';
     document.cookie = `${this.TOKEN_KEY}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
   }
 
-  private decodeToken(): any {
+ decodeToken(): any {
     const token = this.getToken();
     if (!token) return null;
     try {

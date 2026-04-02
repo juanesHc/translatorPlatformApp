@@ -24,6 +24,7 @@ export class SidebarComponent implements OnInit {
   }
 
   logout(): void {
+    this.cookieService.deleteToken();
     this.router.navigate(['/login']);
   }
 }

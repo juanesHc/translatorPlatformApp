@@ -1,43 +1,45 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
+import { adminGuard } from './guards/admin.guard';
 
 export const routes: Routes = [
-     {
+
+  { path: 'login',     loadComponent: () => import('./components/login/login.component').then(m => m.LoginComponent) },
+  { path: 'register',  loadComponent: () => import('./components/register/public-register/public-register.component').then(m => m.PublicRegisterComponent) },
+  { path: '',          redirectTo: 'login', pathMatch: 'full' },
+
+  {
     path: 'dashboard',
-    loadComponent: () => import('./components/dashboard/dashboard.component')
-      .then(m => m.DashboardComponent)
+    canActivate: [authGuard],
+    loadComponent: () => import('./components/dashboard/dashboard.component').then(m => m.DashboardComponent)
   },
   {
     path: 'translation/:id',
-    loadComponent: () => import('./components/translation-detail/translation-detail.component')
-      .then(m => m.TranslationDetailComponent)
+    canActivate: [authGuard],
+    loadComponent: () => import('./components/translation-detail/translation-detail.component').then(m => m.TranslationDetailComponent)
   },
   {
     path: 'profile',
-    loadComponent: () => import('./components/profile/profile.component')
-      .then(m => m.ProfileComponent)
+    canActivate: [authGuard],
+    loadComponent: () => import('./components/profile/profile.component').then(m => m.ProfileComponent)
   },
-    {
+  {
     path: 'about',
-    loadComponent: () => import('./components/about/about.component')
-      .then(m => m.AboutComponent)
+    canActivate: [authGuard],
+    loadComponent: () => import('./components/about/about.component').then(m => m.AboutComponent)
   },
-  
-{ path: 'login', loadComponent: () => import('./components/login/login.component').then(m => m.LoginComponent) },
-{ path: 'register', loadComponent: () => import('./components/register/public-register/public-register.component').then(m => m.PublicRegisterComponent) },
-{ path: 'role-register', loadComponent: () => import('./components/register/role-register/role-register.component').then(m => m.RoleRegisterComponent) },
-{ path: '', redirectTo: 'login', pathMatch: 'full' },
-{
-  path: 'not-found',
-  loadComponent: () => import('./components/not-found/not-found.component')
-    .then(m => m.NotFoundComponent)
-},
-{
-  path: 'filter-users',
-  loadComponent: () => import('./components/admin-users/admin-users.component')
-    .then(m => m.AdminUsersComponent)
-},
-{
-  path: '**',
-  redirectTo: 'not-found'
-}
+  {
+    path: 'role-register',
+    canActivate: [authGuard],
+    loadComponent: () => import('./components/register/role-register/role-register.component').then(m => m.RoleRegisterComponent)
+  },
+
+  {
+    path: 'filter-users',
+    canActivate: [authGuard, adminGuard],
+    loadComponent: () => import('./components/admin-users/admin-users.component').then(m => m.AdminUsersComponent)
+  },
+
+  { path: 'not-found', loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent) },
+  { path: '**', redirectTo: 'not-found' }
 ];
