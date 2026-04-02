@@ -6,6 +6,9 @@ import { TranslationSummary } from '../../model/Translation';
 import { DocumentService } from '../../services/document/document.service';
 import { TranslationService } from '../../services/translation/translation.service';
 import { FormsModule } from '@angular/forms';
+import { SendEmailRequestDto } from '../../model/Messaging';
+import { MessagingService } from '../../services/messaging/messaging.service';
+import { CookiesService } from '../../services/cookies/cookies.service';
 
 
 @Component({
@@ -20,10 +23,17 @@ export class TranslationDetailComponent implements OnInit {
   private router = inject(Router);
   private translationService = inject(TranslationService);
   private documentService = inject(DocumentService);
+  private messagingService = inject(MessagingService);
+  private cookieService = inject(CookiesService); // TODO: cuando implementes auth cambia esto por el servicio de auth --- IGNORE ---
 
   documentId: string = '';
   translations: TranslationSummary[] = [];
   loading = false;
+
+  translationLoading = false;
+  translationSuccess = false;
+  translationError = false;
+  emailSuccess = false;
 
   showTranslationModal = false;
   selectedLanguage = '';
@@ -107,19 +117,27 @@ closeTranslationModal(): void {
 
 requestTranslation(): void {
   if (!this.selectedLanguage) return;
+  this.translationLoading = true;
+  this.translationSuccess = false;
+  this.translationError = false;
 
   this.translationService.translateDocument(this.documentId, this.selectedLanguage).subscribe({
     next: () => {
+      this.translationLoading = false;
+      this.translationSuccess = true;
       this.closeTranslationModal();
       this.loadTranslations();
+      setTimeout(() => this.translationSuccess = false, 3000);
     },
     error: (err) => {
       console.error(err);
+      this.translationLoading = false;
+      this.translationError = true;
       this.closeTranslationModal();
+      setTimeout(() => this.translationError = false, 3000);
     }
   });
 }
-
 openEmailModal(translationId: string): void {
   this.selectedTranslationId = translationId;
   this.showEmailModal = true;
@@ -133,14 +151,30 @@ closeEmailModal(): void {
   this.emailMessage = '';
 }
 
-sendEmail(): void {
-  if (!this.emailTo) return;
-  // TODO: conectar al endpoint de envío de correo
-  console.log('Enviar a:', this.emailTo);
-  this.closeEmailModal();
-}
-
 sendTranslation(translationId: string): void {
   this.openEmailModal(translationId);
+}
+
+sendEmail(): void {
+  if (!this.emailTo) return;
+
+  const senderEmail = this.cookieService.getEmail() || '';
+
+  const request: SendEmailRequestDto = {
+    translationId: this.selectedTranslationId,
+    senderEmail: senderEmail,
+    recipientEmail: this.emailTo,
+    subject: this.emailSubject || 'Documento traducido - TranslatorPlatform',
+    message: this.emailMessage
+  };
+
+  this.messagingService.sendTranslation(request).subscribe({
+    next: (data) => {
+      this.closeEmailModal();
+      this.emailSuccess = true;
+      setTimeout(() => this.emailSuccess = false, 3000);
+    },
+    error: (err) => console.error(err)
+  });
 }
 }

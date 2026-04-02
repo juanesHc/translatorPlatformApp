@@ -21,6 +21,44 @@
       <p class="page-title">Traducciones del documento</p>
       <p class="page-sub">{{ translations.length }} traducción{{ translations.length !== 1 ? 'es' : '' }} realizada{{ translations.length !== 1 ? 's' : '' }}</p>
       <div class="page-actions">
+        @if (translationLoading) {
+  <div class="banner processing">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5" stroke-dasharray="30 10"/>
+    </svg>
+    Procesando traducción, por favor espera...
+  </div>
+}
+
+@if (translationSuccess) {
+  <div class="banner success">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M8 12l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Traducción completada exitosamente
+  </div>
+}
+
+@if (translationError) {
+  <div class="banner error">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M12 8v4M12 16h.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    Ocurrió un error al traducir el documento
+  </div>
+}
+
+@if (emailSuccess) {
+  <div class="banner success">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.5"/>
+      <path d="M8 12l3 3 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+    Documento enviado correctamente
+  </div>
+}
         <button class="btn-primary" (click)="openTranslationModal()">
           + Nueva traducción
         </button>
@@ -101,9 +139,13 @@
 
       <div class="modal-actions">
         <button class="btn-secondary" (click)="closeTranslationModal()">Cancelar</button>
-        <button class="btn-primary" (click)="requestTranslation()" [disabled]="!selectedLanguage">
-          Traducir
-        </button>
+          <button class="btn-primary" (click)="requestTranslation()" [disabled]="!selectedLanguage || translationLoading">
+            @if (translationLoading) {
+              Procesando...
+            } @else {
+              Traducir
+            }
+          </button>
       </div>
     </div>
   </div>
