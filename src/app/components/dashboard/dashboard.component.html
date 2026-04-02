@@ -1,17 +1,17 @@
 <div class="shell">
   <div class="topbar">
     <span class="topbar-logo">TranslatorPlatform</span>
-    <div class="topbar-user">
-      <span class="username">Juanes</span>
-      <div class="avatar">JH</div>
-    </div>
+      <div class="topbar-user">
+        <span class="username">{{ givenName }}</span>
+        <div class="avatar">{{ avatarInitials }}</div>
+      </div>
   </div>
 
   <div class="main">
     <app-sidebar role="COMMON" />
 
     <div class="content">
-      <p class="greeting">Hola, Juanes</p>
+      <p class="greeting">Hola, {{ givenName }}</p>
       <p class="subtitle">
         Tienes {{ totalElements }} documento{{ totalElements !== 1 ? 's' : '' }} en total
       </p>

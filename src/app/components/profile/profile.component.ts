@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { PersonData } from '../../model/Person';
 import { PersonService } from '../../services/person/person.service';
+import { CookiesService } from '../../services/cookies/cookies.service';
 
 
 @Component({
@@ -17,9 +18,13 @@ import { PersonService } from '../../services/person/person.service';
 export class ProfileComponent implements OnInit {
   private personService = inject(PersonService);
   private router = inject(Router);
+  private cookieService = inject(CookiesService);
 
 
-  private personId = 'cd81a1ad-80f5-49e3-8430-7b3a73d145c9';
+  private personId = this.cookieService.getPersonId() || '';
+
+  givenName = '';
+  avatarInitials = '';
 
   personData: PersonData = { firstName: '', lastName: '', email: '' };
   firstName = '';
@@ -34,16 +39,18 @@ export class ProfileComponent implements OnInit {
     this.loadPersonData();
   }
 
-  loadPersonData(): void {
-    this.personService.getMyData(this.personId).subscribe({
-      next: (data) => {
-        this.personData = data;
-        this.firstName = data.firstName;
-        this.lastName = data.lastName;
-      },
-      error: (err) => console.error(err)
-    });
-  }
+loadPersonData(): void {
+  this.personService.getMyData(this.personId).subscribe({
+    next: (data) => {
+      this.personData = data;
+      this.firstName = data.firstName;
+      this.lastName = data.lastName;
+
+      this.avatarInitials = this.getInitials();
+    },
+    error: (err) => console.error(err)
+  });
+}
 
   openEditModal(): void {
     this.showEditModal = true;
@@ -62,6 +69,7 @@ export class ProfileComponent implements OnInit {
       next: () => {
         this.personData.firstName = this.firstName;
         this.personData.lastName = this.lastName;
+        this.avatarInitials = this.getInitials(); 
         this.showEditModal = false;
         this.successMessage = 'Datos actualizados correctamente';
         this.loading = false;

@@ -6,6 +6,7 @@ import { LoadDocumentResponse, DocumentFilters } from '../../model/Document';
 import { DocumentService } from '../../services/document/document.service';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { debounceTime, Subject, switchMap, tap } from 'rxjs';
+import { CookiesService } from '../../services/cookies/cookies.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +17,7 @@ import { debounceTime, Subject, switchMap, tap } from 'rxjs';
 })
 export class DashboardComponent implements OnInit {
   private documentService = inject(DocumentService);
+  private cookies = inject(CookiesService);
   private router = inject(Router);
 
   documents: LoadDocumentResponse[] = [];
@@ -36,7 +38,10 @@ export class DashboardComponent implements OnInit {
   availableLanguages: string[] = [];
   targetLanguage = ''
 
-  private personId = 'cd81a1ad-80f5-49e3-8430-7b3a73d145c9';
+  givenName: string = '';
+  avatarInitials: string = '';
+
+  private personId = this.cookies.getPersonId()||'';
   
   filters: DocumentFilters = {
     fileName: '',
@@ -49,6 +54,11 @@ export class DashboardComponent implements OnInit {
   private filterSubject = new Subject<void>();
 
   ngOnInit(): void {
+    const name = this.cookies.getGivenName();
+    if (name) {
+      this.givenName = name;
+      this.avatarInitials = this.buildInitials(name);
+    }
     this.initSearchPipeline();
     this.filterSubject.next();
     this.loadLanguages();
@@ -71,6 +81,14 @@ export class DashboardComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+    private buildInitials(name: string): string {
+    return name
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase())
+      .slice(0, 2)
+      .join('');
   }
 
 loadLanguages() {

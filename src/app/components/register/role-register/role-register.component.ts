@@ -6,6 +6,7 @@ import { AdminService } from '../../../services/admin/admin.service';
 import { RoleService } from '../../../services/role/role.service';
 import { RoleDto } from '../../../model/Role';
 import { RegisterPersonWithRoleRequestDto } from '../../../model/Person';
+import { CookiesService } from '../../../services/cookies/cookies.service';
 
 @Component({
   selector: 'app-role-register',
@@ -18,8 +19,11 @@ export class RoleRegisterComponent implements OnInit {
   private adminService = inject(AdminService);
   private roleService = inject(RoleService);
   private router = inject(Router);
+  private cookies = inject(CookiesService);
 
   givenName = '';
+  avatarInitials = '';
+
   familyName = '';
   email = '';
   password = '';
@@ -33,6 +37,11 @@ export class RoleRegisterComponent implements OnInit {
 roles: RoleDto[] = [];
 
 ngOnInit(): void {
+      const name = this.cookies.getGivenName();
+    if (name) {
+      this.givenName = name;
+      this.avatarInitials = this.buildInitials(name);
+    }
   this.roleService.getRoles().subscribe({
     next: (data) => this.roles = data,
     error: (err) => console.error(err)
@@ -76,4 +85,13 @@ register(): void {
   goBack(): void {
     this.router.navigate(['filter-users']);
   }
+
+  private buildInitials(name: string): string {
+    return name
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase())
+      .slice(0, 2)
+      .join('');
+  }
+
 }

@@ -5,6 +5,7 @@ import { AdminService } from '../../services/admin/admin.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SidebarComponent } from '../sidebar/sidebar.component';
+import { CookiesService } from '../../services/cookies/cookies.service';
 
 @Component({
   selector: 'app-admin-users',
@@ -16,12 +17,15 @@ imports: [CommonModule, FormsModule, SidebarComponent],
 export class AdminUsersComponent implements OnInit {
   private adminService = inject(AdminService);
   private router = inject(Router);
-
+  private cookies = inject(CookiesService);
   persons: RetrievePersonResponse[] = [];
   totalPages = 0;
   totalElements = 0;
   currentPage = 0;
   loading = false;
+
+  givenName: string = '';
+  avatarInitials: string = '';
 
   filters: RetrievePersonRequest = {
     givenName: '',
@@ -36,6 +40,11 @@ export class AdminUsersComponent implements OnInit {
   };
 
   ngOnInit(): void {
+        const name = this.cookies.getGivenName();
+    if (name) {
+      this.givenName = name;
+      this.avatarInitials = this.buildInitials(name);
+    }
     this.search();
   }
 
@@ -56,6 +65,15 @@ export class AdminUsersComponent implements OnInit {
       }
     });
   }
+
+  private buildInitials(name: string): string {
+    return name
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase())
+      .slice(0, 2)
+      .join('');
+  }
+
 
   clearFilters(): void {
     this.filters = {

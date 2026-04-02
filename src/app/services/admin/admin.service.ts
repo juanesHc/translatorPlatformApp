@@ -21,5 +21,4 @@ registerUser(request: RegisterPersonWithRoleRequestDto): Observable<RegisterPers
 blockPerson(personId: string): Observable<RetrieveStatusAccountResponse> {
   return this.http.patch<RetrieveStatusAccountResponse>(`${this.baseUrl}/block/${personId}`, {});
 }
-
 }

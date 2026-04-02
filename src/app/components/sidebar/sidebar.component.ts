@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { CookiesService } from '../../services/cookies/cookies.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,11 +10,20 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
-export class SidebarComponent {
-  @Input() role: string = 'ADMIN';
-    private router = inject(Router);
+export class SidebarComponent implements OnInit {
+  role: string = '';
+  private router = inject(Router);
+  private cookieService = inject(CookiesService);
 
-    logout(): void {
+  ngOnInit(): void {
+    this.role = this.cookieService.getRole() || 'COMMON';
+  }
+
+  get isAdmin(): boolean {
+    return this.role === 'ADMIN';
+  }
+
+  logout(): void {
     this.router.navigate(['/login']);
   }
 }
