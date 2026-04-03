@@ -1,0 +1,93 @@
+.recovery-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+}
+
+.recovery-card {
+  background: white;
+  border-radius: 16px;
+  padding: 48px 40px;
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+.brand {
+  color: #1a2744;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 32px;
+}
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.state p {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+.state h2 {
+  color: #1a2744;
+  margin: 0;
+}
+
+.icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.icon.success {
+  background: #e6f4ea;
+  color: #2e7d32;
+}
+
+.icon.error {
+  background: #fdecea;
+  color: #c62828;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f0f0f0;
+  border-top-color: #f5c542;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn-primary {
+  background: #f5c542;
+  color: #1a2744;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: opacity 0.2s;
+}
+
+.btn-primary:hover {
+  opacity: 0.85;
+}

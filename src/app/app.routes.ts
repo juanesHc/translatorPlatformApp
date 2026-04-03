@@ -39,6 +39,11 @@ export const routes: Routes = [
     canActivate: [authGuard, adminGuard],
     loadComponent: () => import('./components/admin-users/admin-users.component').then(m => m.AdminUsersComponent)
   },
+  {
+  path: 'recover',
+  loadComponent: () => import('./components/account-recovery/account-recovery.component')
+    .then(m => m.AccountRecoveryComponent)
+},
 
   { path: 'not-found', loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent) },
   { path: '**', redirectTo: 'not-found' }

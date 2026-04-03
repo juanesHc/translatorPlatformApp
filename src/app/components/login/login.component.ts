@@ -21,6 +21,9 @@ export class LoginComponent {
   password = '';
   errorMessage = '';
 
+  accountDeleted = false;
+  emailForRecovery = '';
+
   login(): void {
   if (!this.email || !this.password) {
     this.errorMessage = 'Por favor completa todos los campos';
@@ -37,9 +40,30 @@ export class LoginComponent {
       this.cookies.setToken(response.token);
       this.router.navigate(['/dashboard']);
     },
-    error: (err) => {
-      this.errorMessage = 'Credenciales incorrectas o error de servidor';
-      console.error(err);
+error: (err) => {
+  console.log('Error completo:', err);
+  console.log('err.error:', err.error);
+  console.log('mensaje:', err.error?.message);
+  
+  const message = err.error?.message || '';
+  if (message === 'ACCOUNT_DELETED') {
+    this.accountDeleted = true;
+    this.emailForRecovery = this.email;
+  } else {
+    this.errorMessage = 'Credenciales inválidas';
+  }
+}
+  });
+}
+
+recoverAccount(): void {
+  this.loginService.requestRecovery(this.emailForRecovery).subscribe({
+    next: () => {
+      this.errorMessage = 'Te enviamos un email para recuperar tu cuenta';
+      this.accountDeleted = false;
+    },
+    error: () => {
+      this.errorMessage = 'No se pudo enviar el email. Intenta de nuevo.';
     }
   });
 }

@@ -40,4 +40,12 @@ constructor(private cookieService: CookiesService) {}
     }
     return true;
   }
+
+requestRecovery(email: string): Observable<string> {
+  return this.http.post(`${this.baseUrl}/recover/resend`, null, {
+    params: { email },
+    responseType: 'text'
+  });
+}
+
 }

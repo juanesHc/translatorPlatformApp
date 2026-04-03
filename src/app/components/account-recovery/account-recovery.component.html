@@ -1,0 +1,36 @@
+<div class="recovery-wrapper">
+  <div class="recovery-card">
+
+    <div class="brand">TranslatorPlatform</div>
+
+    @if (status === 'loading') {
+      <div class="state">
+        <div class="spinner"></div>
+        <p>Verificando tu cuenta...</p>
+      </div>
+    }
+
+    @if (status === 'success') {
+      <div class="state">
+        <div class="icon success">✓</div>
+        <h2>¡Cuenta recuperada!</h2>
+        <p>{{ message }}</p>
+        <button class="btn-primary" (click)="goToLogin()">
+          Ir al inicio de sesión
+        </button>
+      </div>
+    }
+
+    @if (status === 'error') {
+      <div class="state">
+        <div class="icon error">✕</div>
+        <h2>Algo salió mal</h2>
+        <p>{{ message }}</p>
+        <button class="btn-primary" (click)="goToLogin()">
+          Volver al inicio de sesión
+        </button>
+      </div>
+    }
+
+  </div>
+</div>

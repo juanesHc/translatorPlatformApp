@@ -21,6 +21,14 @@
     </div>
 
     <button class="btn-primary" (click)="login()">Iniciar sesión</button>
+    @if (accountDeleted) {
+      <div class="account-deleted-banner">
+        <p>Tu cuenta fue eliminada. ¿Deseas recuperarla?</p>
+        <button class="btn-recovery" (click)="recoverAccount()">
+          Recuperar mi cuenta
+        </button>
+      </div>
+}
 
     <div class="divider">
       <span>o</span>
