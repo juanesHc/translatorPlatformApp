@@ -55,4 +55,18 @@ resendVerification(personId: string): Observable<string> {
   });
 }
 
+sendForgotPasswordEmail(email: string): Observable<string> {
+  return this.http.post(`${this.baseUrl}/forgot-password`,
+    { email },
+    { responseType: 'text' }
+  );
+}
+
+resetPassword(token: string, newPassword: string, confirmPassword: string): Observable<string> {
+  return this.http.post(`${this.baseUrl}/reset-password`,
+    { token, newPassword, confirmPassword },
+    { responseType: 'text' }
+  );
+}
+
 }
