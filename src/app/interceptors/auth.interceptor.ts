@@ -13,26 +13,25 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     ? req.clone({ setHeaders: { Authorization: `Bearer ${token}` } })
     : req;
 
-  return next(reqConToken).pipe(
-    catchError((error: HttpErrorResponse) => {
-      switch (error.status) {
-        case 401:
+return next(reqConToken).pipe(
+  catchError((error: HttpErrorResponse) => {
+    switch (error.status) {
+      case 401:
+        const message = (error.error?.message || '');
+        if (message !== 'ACCOUNT_DELETED'
+          && message !== 'ACCOUNT_BLOCKED'
+          && message !== 'ACCOUNT_UNVERIFIED') {
           console.warn('Sesión expirada, redirigiendo al login...');
-          cookieService.deleteToken(); 
+          cookieService.deleteToken();
           router.navigate(['/login']);
-          break;
-
-        case 403:
-          console.warn('Acceso denegado');
-          router.navigate(['/dashboard']);
-          break;
-
-        case 404:
-          console.warn('Recurso no encontrado');
-          router.navigate(['/not-found']);
-          break;
-      }
-      return throwError(() => error);
-    })
-  );
+        }
+        break;
+      case 403:
+        console.warn('Acceso denegado');
+        router.navigate(['/dashboard']);
+        break;
+    }
+    return throwError(() => error);
+  })
+);
 };

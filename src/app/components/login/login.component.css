@@ -184,3 +184,101 @@
 .btn-recovery:hover {
   opacity: 0.85;
 }
+
+.account-unverified-banner {
+  background: #e8f4fd;
+  border: 1px solid #90caf9;
+  border-radius: 10px;
+  padding: 20px;
+  margin-top: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.banner-icon {
+  font-size: 28px;
+}
+
+.banner-title {
+  color: #1a2744;
+  font-size: 15px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.banner-text {
+  color: #666;
+  font-size: 13px;
+  margin: 0;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-card {
+  background: white;
+  border-radius: 16px;
+  padding: 40px 32px;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+}
+
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #999;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  color: #1a2744;
+}
+
+.banner-icon {
+  font-size: 36px;
+}
+
+.banner-title {
+  color: #1a2744;
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.banner-text {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+.success-banner {
+  background: #e6f4ea;
+  color: #2e7d32;
+  border: 1px solid #a5d6a7;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  text-align: center;
+}

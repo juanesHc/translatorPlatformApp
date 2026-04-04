@@ -44,6 +44,11 @@ export const routes: Routes = [
   loadComponent: () => import('./components/account-recovery/account-recovery.component')
     .then(m => m.AccountRecoveryComponent)
 },
+{
+  path: 'verify',
+  loadComponent: () => import('./components/verify-email/verify-email.component')
+    .then(m => m.VerifyEmailComponent)
+},
 
   { path: 'not-found', loadComponent: () => import('./components/not-found/not-found.component').then(m => m.NotFoundComponent) },
   { path: '**', redirectTo: 'not-found' }

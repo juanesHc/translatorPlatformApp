@@ -48,4 +48,11 @@ requestRecovery(email: string): Observable<string> {
   });
 }
 
+resendVerification(personId: string): Observable<string> {
+  return this.http.post(`${this.baseUrl}/verify/resend`, null, {
+    params: { personId },
+    responseType: 'text'
+  });
+}
+
 }

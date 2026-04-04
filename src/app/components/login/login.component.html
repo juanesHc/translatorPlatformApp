@@ -9,6 +9,10 @@
       <div class="error-banner">{{ errorMessage }}</div>
     }
 
+    @if (successMessage) {
+    <div class="success-banner">{{ successMessage }}</div>
+}
+
     <div class="form-fields">
       <div class="field">
         <label>Correo electrónico</label>
@@ -49,4 +53,23 @@
       <a routerLink="/register">Regístrate</a>
     </p>
   </div>
+
+@if (accountUnverified) {
+  <div class="modal-overlay">
+    <div class="modal-card">
+      <button class="modal-close" (click)="accountUnverified = false">✕</button>
+      <div class="banner-icon">✉</div>
+      <p class="banner-title">Correo sin verificar</p>
+      <p class="banner-text">
+        Debes verificar tu correo antes de continuar.
+        Revisa tu bandeja de entrada o solicita un nuevo email.
+      </p>
+      <button class="btn-recovery" (click)="resendVerification()">
+        Reenviar email de verificación
+      </button>
+    </div>
+  </div>
+}
+
 </div>
+
