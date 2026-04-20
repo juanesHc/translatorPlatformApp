@@ -31,7 +31,6 @@ export class AdminUsersComponent implements OnInit {
     givenName: '',
     familyName: '',
     email: '',
-    authEnum: '',
     activate: null,
     startDate: '',
     endDate: '',
@@ -80,7 +79,6 @@ export class AdminUsersComponent implements OnInit {
       givenName: '',
       familyName: '',
       email: '',
-      authEnum: '',
       activate: null,
       startDate: '',
       endDate: '',
@@ -95,7 +93,6 @@ export class AdminUsersComponent implements OnInit {
     if (this.filters.givenName) payload.givenName = this.filters.givenName;
     if (this.filters.familyName) payload.familyName = this.filters.familyName;
     if (this.filters.email) payload.email = this.filters.email;
-    if (this.filters.authEnum) payload.authEnum = this.filters.authEnum;
     if (this.filters.activate !== null) payload.activate = this.filters.activate;
     if (this.filters.startDate) payload.startDate = this.filters.startDate;
     if (this.filters.endDate) payload.endDate = this.filters.endDate;
@@ -107,14 +104,14 @@ export class AdminUsersComponent implements OnInit {
   }
 
   prevPage(): void {
-    if (this.currentPage > 0) {
+    if (this.filters.page > 0) {
       this.filters.page--;
       this.search();
     }
   }
 
   nextPage(): void {
-    if (this.currentPage < this.totalPages - 1) {
+    if (this.filters.page < this.totalPages - 1) {
       this.filters.page++;
       this.search();
     }

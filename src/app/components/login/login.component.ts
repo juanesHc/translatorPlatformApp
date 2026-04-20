@@ -78,7 +78,6 @@ resendVerification(): void {
   this.loginService.resendVerification(this.emailForRecovery).subscribe({
     next: () => {
       this.accountUnverified = false;
-      // ✅ Mensaje visible fuera del modal
       this.successMessage = 'Te enviamos un email de verificación. Revisa tu bandeja.';
     },
     error: () => {
@@ -86,8 +85,4 @@ resendVerification(): void {
     }
   });
 }
-
-  loginWithGoogle(): void {
-    this.loginService.loginWithGoogle();
-  }
 }

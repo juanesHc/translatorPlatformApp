@@ -34,8 +34,13 @@ export class ProfileComponent implements OnInit {
   showDeactivateModal = false;
   loading = false;
   successMessage = '';
+  errorMessage = '';
 
   ngOnInit(): void {
+    if (!this.personId) {
+      this.router.navigate(['/login']);
+      return;
+    }
     this.loadPersonData();
   }
 
@@ -61,7 +66,12 @@ loadPersonData(): void {
   }
 
   confirmEdit(): void {
+    if (!this.firstName.trim() || !this.lastName.trim()) {
+      this.errorMessage = 'Nombre y apellido son obligatorios';
+      return;
+    }
     this.loading = true;
+    this.errorMessage = '';
     this.personService.editMyData(this.personId, {
       firstName: this.firstName,
       lastName: this.lastName
@@ -69,7 +79,7 @@ loadPersonData(): void {
       next: () => {
         this.personData.firstName = this.firstName;
         this.personData.lastName = this.lastName;
-        this.avatarInitials = this.getInitials(); 
+        this.avatarInitials = this.getInitials();
         this.showEditModal = false;
         this.successMessage = 'Datos actualizados correctamente';
         this.loading = false;
@@ -78,6 +88,7 @@ loadPersonData(): void {
       error: (err) => {
         console.error(err);
         this.loading = false;
+        this.errorMessage = 'No se pudieron actualizar los datos. Inténtalo de nuevo.';
       }
     });
   }

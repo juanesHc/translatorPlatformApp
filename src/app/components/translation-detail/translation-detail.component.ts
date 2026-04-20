@@ -43,9 +43,14 @@ export class TranslationDetailComponent implements OnInit {
   emailTo = '';
   emailSubject = '';
   emailMessage = '';
+  emailError = '';
 
   ngOnInit(): void {
     this.documentId = this.route.snapshot.paramMap.get('id') ?? '';
+    if (!this.documentId) {
+      this.router.navigate(['/dashboard']);
+      return;
+    }
     this.loadTranslations();
   }
 
@@ -149,6 +154,7 @@ closeEmailModal(): void {
   this.emailTo = '';
   this.emailSubject = '';
   this.emailMessage = '';
+  this.emailError = '';
 }
 
 sendTranslation(translationId: string): void {
@@ -156,25 +162,37 @@ sendTranslation(translationId: string): void {
 }
 
 sendEmail(): void {
-  if (!this.emailTo) return;
+  this.emailError = '';
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!this.emailTo || !emailPattern.test(this.emailTo.trim())) {
+    this.emailError = 'Ingresa un correo electrónico válido';
+    return;
+  }
 
   const senderEmail = this.cookieService.getEmail() || '';
+  if (!senderEmail) {
+    this.emailError = 'Sesión expirada. Vuelve a iniciar sesión.';
+    return;
+  }
 
   const request: SendEmailRequestDto = {
     translationId: this.selectedTranslationId,
     senderEmail: senderEmail,
-    recipientEmail: this.emailTo,
+    recipientEmail: this.emailTo.trim(),
     subject: this.emailSubject || 'Documento traducido - TranslatorPlatform',
     message: this.emailMessage
   };
 
   this.messagingService.sendTranslation(request).subscribe({
-    next: (data) => {
+    next: () => {
       this.closeEmailModal();
       this.emailSuccess = true;
       setTimeout(() => this.emailSuccess = false, 3000);
     },
-    error: (err) => console.error(err)
+    error: (err) => {
+      console.error(err);
+      this.emailError = 'No se pudo enviar el correo. Inténtalo de nuevo.';
+    }
   });
 }
 }

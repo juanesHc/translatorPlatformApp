@@ -2,7 +2,6 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { LoginService } from '../../services/login/login.service';
 
 @Component({
@@ -36,24 +35,10 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   resetPassword(): void {
-
- if (!this.newPassword || !this.confirmPassword) {
-    this.errorMessage = 'Por favor completa todos los campos';
-    return;
-  }
-  if (this.passwordsMismatch) {
-    this.errorMessage = 'Las contraseñas no coinciden';
-    return;
-  }
-  if (this.newPassword.length < 8) {
-    this.errorMessage = 'La contraseña debe tener al menos 8 caracteres';
-    return;
-  }
-  if (this.passwordStrength <= 1) {
-    this.errorMessage = 'La contraseña es muy débil. Agrega mayúsculas, números o símbolos.';
-    return;
-  }
-
+    if (!this.token) {
+      this.errorMessage = 'Token inválido o expirado.';
+      return;
+    }
     if (!this.newPassword || !this.confirmPassword) {
       this.errorMessage = 'Por favor completa todos los campos';
       return;
@@ -66,25 +51,28 @@ export class ResetPasswordComponent implements OnInit {
       this.errorMessage = 'La contraseña debe tener al menos 8 caracteres';
       return;
     }
+    if (this.passwordStrength <= 1) {
+      this.errorMessage = 'La contraseña es muy débil. Agrega mayúsculas, números o símbolos.';
+      return;
+    }
 
     this.loading = true;
     this.errorMessage = '';
 
-    this.loginService.resetPassword(
-  this.token,
-  this.newPassword,
-  this.confirmPassword
-).subscribe({
-  next: () => {         this.loading = false;
+    this.loginService.resetPassword(this.token, this.newPassword, this.confirmPassword).subscribe({
+      next: () => {
+        this.loading = false;
         this.modalSuccess = true;
         this.modalMessage = '¡Tu contraseña fue restablecida exitosamente!';
-        this.showModal = true; },
-  error: (err) => {        this.loading = false;
+        this.showModal = true;
+      },
+      error: (err) => {
+        this.loading = false;
         this.modalSuccess = false;
         this.modalMessage = err.error?.message || 'Error al restablecer la contraseña.';
-        this.showModal = true; }
-});
-
+        this.showModal = true;
+      }
+    });
   }
 
   closeModal(): void {
@@ -127,5 +115,11 @@ get passwordsMatch(): boolean {
 get passwordsMismatch(): boolean {
   return this.confirmPassword.length > 0 && this.newPassword !== this.confirmPassword;
 }
+
+get hasUppercase(): boolean { return /[A-Z]/.test(this.newPassword); }
+get hasLowercase(): boolean { return /[a-z]/.test(this.newPassword); }
+get hasNumber(): boolean { return /[0-9]/.test(this.newPassword); }
+get hasSpecial(): boolean { return /[^A-Za-z0-9]/.test(this.newPassword); }
+get hasMinLength(): boolean { return this.newPassword.length >= 8; }
 
 }

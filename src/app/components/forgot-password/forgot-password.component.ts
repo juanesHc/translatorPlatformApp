@@ -37,14 +37,9 @@ export class ForgotPasswordComponent {
         this.successMessage = 'Te enviamos un email para restablecer tu contraseña. Revisa tu bandeja.';
         this.email = '';
       },
-      error: (err) => {
+      error: () => {
         this.loading = false;
-        const message = err.error?.message || '';
-        if (message.includes('Google')) {
-          this.errorMessage = 'Esta cuenta usa Google. No puedes restablecer la contraseña.';
-        } else {
-          this.errorMessage = 'No encontramos una cuenta con ese correo.';
-        }
+        this.errorMessage = 'No encontramos una cuenta con ese correo.';
       }
     });
   }

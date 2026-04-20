@@ -81,11 +81,6 @@ private personService = inject(PersonService);
       });
   }
 
-  registerWithGoogle(): void {
-
-    this.router.navigate(['/dashboard']);
-  }
-
   validatePassword(): boolean {
     if (this.password !== this.confirmPassword) {
       this.errorMessage = 'Las contraseñas no coinciden';

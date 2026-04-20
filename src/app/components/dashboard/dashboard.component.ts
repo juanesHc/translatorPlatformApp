@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms'; // Importante para el manejo de inputs en modales
 import { LoadDocumentResponse, DocumentFilters } from '../../model/Document';
@@ -19,6 +20,7 @@ export class DashboardComponent implements OnInit {
   private documentService = inject(DocumentService);
   private cookies = inject(CookiesService);
   private router = inject(Router);
+  private destroyRef = inject(DestroyRef);
 
   documents: LoadDocumentResponse[] = [];
   loading = false;
@@ -54,6 +56,10 @@ export class DashboardComponent implements OnInit {
   private filterSubject = new Subject<void>();
 
   ngOnInit(): void {
+    if (!this.personId) {
+      this.router.navigate(['/login']);
+      return;
+    }
     const name = this.cookies.getGivenName();
     if (name) {
       this.givenName = name;
@@ -66,9 +72,10 @@ export class DashboardComponent implements OnInit {
 
   private initSearchPipeline(): void {
     this.filterSubject.pipe(
-      debounceTime(400), 
+      debounceTime(400),
       tap(() => this.loading = true),
-      switchMap(() => this.documentService.getDocuments(this.personId, this.filters))
+      switchMap(() => this.documentService.getDocuments(this.personId, this.filters)),
+      takeUntilDestroyed(this.destroyRef)
     ).subscribe({
       next: (response) => {
         this.documents = response.documents;

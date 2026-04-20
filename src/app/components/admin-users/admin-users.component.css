@@ -27,7 +27,6 @@
 .badge { font-size: 11px; padding: 3px 8px; border-radius: 20px; width: fit-content; }
 .badge.active { background: rgba(16,185,129,0.1); color: #059669; }
 .badge.inactive { background: rgba(239,68,68,0.1); color: #dc2626; }
-.badge.google { background: rgba(66,133,244,0.1); color: #4285F4; }
 .badge.classic { background: rgba(26,39,68,0.07); color: #1a2744; }
 .empty { text-align: center; padding: 40px; color: #9ca3af; font-size: 14px; }
 .pagination { display: flex; align-items: center; justify-content: center; gap: 16px; }
@@ -35,7 +34,7 @@
 .btn-page:disabled { opacity: 0.4; cursor: not-allowed; }
 .page-info { font-size: 13px; color: #6b7280; }
 .table-header, .table-row {
-  grid-template-columns: 2fr 2fr 3fr 1fr 1fr 1fr;
+  grid-template-columns: 2fr 2fr 3fr 1fr 1fr;
 }
 
 .btn-block {

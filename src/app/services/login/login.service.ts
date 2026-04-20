@@ -13,10 +13,6 @@ constructor(private cookieService: CookiesService) {}
   private http = inject(HttpClient);
   private baseUrl = 'http://localhost:8080/api/auth';
 
-  loginWithGoogle(): void {
-    window.location.href = 'http://localhost:8080/oauth2/authorization/google';
-  }
-
   handleLoginSuccess(token: string): void {
     this.cookieService.setToken(token);
   }
